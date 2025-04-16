@@ -1,0 +1,38 @@
+#include<LPC17xx.h>
+#define key1 (1 << 16)
+#define key2 (1 << 17)
+#define key3 (1 << 18)
+#define LED (1 << 4)
+#define RELAY (1 << 19)
+#define BUZZ (1 << 20)
+#define KEY_PIN LPC_GPIO1 -> FIOPIN
+int main(void) {
+    LPC_GPIO0 -> FIODIR |= LED;
+    LPC_GPIO0 -> FIOCLR |= LED;
+
+    LPC_GPIO0 -> FIODIR |= RELAY;
+    LPC_GPIO0 -> FIOCLR |= RELAY;
+
+    LPC_GPIO0 -> FIODIR |= BUZZ;
+    LPC_GPIO0 -> FIOCLR |= BUZZ;
+
+    LPC_GPIO1 -> FIODIR &= ~(key1 | key2 | key3);
+    LPC_GPIO1 -> FIOSET = (key1 | key2 | key3);
+
+    while(1) {
+        if(!(KEY_PIN & key1))
+            LPC_GPIO0 -> FIOSET = LED;
+        else
+            LPC_GPIO0 -> FIOCLR = LED;
+
+        if(!(KEY_PIN & key2))
+            LPC_GPIO0 -> FIOSET = RELAY;
+        else
+            LPC_GPIO0 -> FIOCLR = RELAY;
+
+        if(!(KEY_PIN & key3))
+            LPC_GPIO0 -> FIOSET = BUZZ;
+        else
+            LPC_GPIO0 -> FIOCLR = BUZZ;
+    }
+}
