@@ -1,0 +1,53 @@
+(a).
+
+#include<lpc17xx.h>
+#define voltage 1023
+#define TIME 10
+
+int main(void)
+{
+    uint32_t i=0;
+    uint32_t m;
+    LPC_PINCON->PINSEL1 |= (1 << 21);
+    while(1)
+    {
+        for(i=0; i<voltage; i++)
+        {
+            LPC_DAC->DACR = (i << 6);
+            for(m = TIME; m > 1; m--);
+        }
+
+        for(i=voltage; i>0; i--)
+        {
+            LPC_DAC->DACR = (i << 6);
+            for(m = TIME; m > 1; m--);
+        }
+    }
+}
+
+
+(b).
+
+#include<lpc17xx.h>
+#define VOLTAGE 1024
+#define TIME 120
+
+int main(void)
+{
+    uint32_t i, m;
+    LPC_PINCON->PINSEL1 |= (1 << 21);
+    while(1)
+    {
+        for(i=0; i<VOLTAGE; i++)
+        {
+            LPC_DAC->DACR = (VOLTAGE/2 << 6);
+            for(m = TIME; m > 1; m--);
+        }
+
+        for(i=VOLTAGE; i>0; i--)
+        {
+            LPC_DAC->DACR = (VOLTAGE << 6);
+            for(m = TIME; m > 1; m--);
+        }
+    }
+}
