@@ -1,0 +1,16 @@
+#include<LPC17xx.H>
+unsigned char data7[] = {0x88, 0xEB, 0xC4, 0xC1, 0xA3, 0x91, 0x90, 0xCB, 0x80, 0x81, 0x82, 0xB0, 0x9C, 0xE0, 0x94, 0x96};  //16
+
+int main(void){
+    unsigned int i,j;
+    unsigned char count = 0;
+    LPC_GPIO2->FIODIR = 0x000000FF;
+    while(1) {
+        for(i=0; i<5000; i++) {
+            LPC_GPIO2->FIOPIN = data7[count & 0x0F];
+
+            for(j=0; j<500; j++);
+        }
+        ++count;
+    }
+}
